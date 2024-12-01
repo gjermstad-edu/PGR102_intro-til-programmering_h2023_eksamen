@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oppgave 4-3</title>
+    <!-- CSS skal ikke røres -->
+    <link rel="stylesheet" href="css-skal-ikke-roeres/oppgave-4-3.css" />
+  </head>
+  <body>
+    <!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+    <input
+      id="move-miaows-left"
+      class="move-miaows-button"
+      type="button"
+      value="⬅️"
+    />
+    <input
+      id="move-miaows-up"
+      class="move-miaows-button"
+      type="button"
+      value="⬆️"
+    />
+    <input
+      id="move-miaows-right"
+      class="move-miaows-button"
+      type="button"
+      value="➡️"
+    />
+    <input
+      id="move-miaows-down"
+      class="move-miaows-button"
+      type="button"
+      value="⬇️"
+    />
+
+    <div id="container">
+      <img id="miaow-miaow" src="images/miaow-miaow-runner.png" />
+    </div>
+    <!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+    <script>
+      /* I denne script-tagen skal du kode JavaScript (ikke i ekstern fil) */
+
+      // hvor MiaowMiaow starter - hentet fra CSS-filen
+      var x = 250;
+      var y = 250;
+
+      // Bredde og høyde på MiaowMiaow i piksler - hentet fra CSS-filen
+      var width = 70;
+      var height = 70;
+
+      // Bredden og høyden på vinduet
+      var maxX = document.body.clientWidth;
+      var maxY = document.body.clientHeight;
+
+      // Kommentar til meg selv: husk å legge "miaow-miaow-runner-flipped.png" i images-mappen!
+
+      // TODO: gjøre ferdig senere
+
+      /* -------- Vår Kode ---------- */
+
+      const arrowUp = document.getElementById("move-miaows-up");
+      const arrowDown = document.getElementById("move-miaows-down");
+      const arrowLeft = document.getElementById("move-miaows-left");
+      const arrowRight = document.getElementById("move-miaows-right");
+      const cat = document.getElementById("miaow-miaow");
+
+      /* variabel for verdier av høyre og nedre grense */
+      let pxFromRightBorder = 70;
+      let pxFromBottomBorder = 70;
+
+      arrowUp.onclick = function () {
+        // Setter grensen for hvor langt opp katten kan gå
+        if (y - 10 <= 0) {
+          y = y;
+        } else {
+          y = y - 20;
+        }
+        updateInterface();
+      };
+
+      arrowDown.onclick = function () {
+        // setter grensen for hvor langt ned katten kan gå
+        if (y + pxFromBottomBorder >= maxY) {
+          y = maxY - pxFromBottomBorder;
+        } else {
+          y = y + 20;
+        }
+        updateInterface();
+      };
+
+      arrowLeft.onclick = function () {
+        // setter grensen for hvor langt til venstre katten kan gå
+        if (x - 10 <= 0) {
+          x = x;
+        } else {
+          x = x - 20;
+        }
+        cat.src = "images/miaow-miaow-runner-flipped.png";
+        updateInterface();
+      };
+
+      arrowRight.onclick = function () {
+        // setter grensen for hvor langt til høyre katten kan gå
+        if (x + pxFromRightBorder >= maxX) {
+          x = maxX - pxFromRightBorder;
+          FromRightBorder;
+        } else {
+          x = x + 20;
+        }
+        cat.src = "images/miaow-miaow-runner.png";
+        updateInterface();
+      };
+
+      // Flytter katten grafisk så lenge den ikke ville havnet utenfor skjermen
+      function updateInterface() {
+        if (y + pxFromBottomBorder >= maxY) {
+          y = maxY - pxFromBottomBorder;
+        }
+        if (x + pxFromRightBorder >= maxX) {
+          x = maxX - pxFromRightBorder;
+        }
+        cat.style.left = `${x}px`;
+        cat.style.top = `${y}px`;
+      }
+
+      setInterval(function () {
+        // Oppdaterer variablene for max X og Y til brukerens vindu
+        maxX = window.innerWidth;
+        maxY = window.innerHeight;
+        // Oppdaterer siden så katten ikke forsvinner om bruker forminsker vinduet
+        updateInterface();
+      }, 300);
+
+      /* -------- Handlingsplan oppgave 4-3 ---------- */
+
+      // [X] Hent ut elementer
+      // -> Pil opp
+      // -> Pil ned
+      // -> Pil høyre
+      // -> Pil venstre
+      // -> Miaow Miaow
+
+      // [X] Sett opp funksjon for at Miaow Miaow
+      // -> Pil opp flytter Miaow Miaow oppover
+      // -> Pil ned flyter MM nedover
+      // -> Pil høyre flytter MM til høyre
+      // ---> src er original bildet
+      // -> Pil venstre flytter MM
+      // ---> src er motsatt bilde
+
+      // [X] Det er ikke mulig å flytte utenfor grønne området
+    </script>
+  </body>
+</html>

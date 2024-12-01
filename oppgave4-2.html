@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kappløpet</title>
+    <!-- CSS skal ikke røres -->
+    <link rel="stylesheet" href="css-skal-ikke-roeres/kapploepet.css" />
+  </head>
+  <body>
+    <div id="container">
+      <!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+      <h1 id="main-heading">Kappløpet</h1>
+      <h2 id="winner-status">Løpet er i gang</h2>
+
+      <input
+        id="move-miaows-left-leg-btn"
+        type="button"
+        value="Beveg Miaows venstre ben"
+      />
+      <input
+        id="move-miaows-right-leg-btn"
+        type="button"
+        value="Beveg Miaows høyre ben"
+      />
+
+      <div id="pond"></div>
+      <div id="finish-line"></div>
+      <img id="building" src="images/building-2.png" />
+
+      <img id="eskilpadde" src="images/eskilpadde.png" />
+
+      <img id="miaow-miaow" src="images/miaow-miaow-runner.png" />
+
+      <img id="geir-geit" src="images/geirgeit.png" />
+    </div>
+    <!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+    <script>
+      /* I denne script-tagen skal du kode JavaScript (ikke i ekstern fil) */
+
+      /* Henter ut elementer */
+      const cat = document.getElementById("miaow-miaow");
+      const turtle = document.getElementById("eskilpadde");
+      const goat = document.getElementById("geir-geit");
+      const catRightLegButton = document.getElementById(
+        "move-miaows-right-leg-btn"
+      );
+      const catLeftLegButton = document.getElementById(
+        "move-miaows-left-leg-btn"
+      );
+      const heading = document.getElementById("winner-status");
+
+      let gameRunning = true;
+      let catRightLeg = false;
+      let catLeftLeg = false;
+      let turtleRacer = false;
+
+      /* setter verdier til posisjoneringen av deltakerne */
+      let catPosition = 0;
+      let turtlePosition = 0;
+      let goatPosition = 0;
+
+      /* Flytter skilpadde */
+      function moveTurtle() {
+        if (turtleRacer === true) {
+          turtlePosition += 60;
+          turtle.style.top = "525px";
+        } else {
+          turtlePosition += 3;
+        }
+      }
+
+      /* Flytter geita */
+      function moveGoat() {
+        let goatCrazy = Math.random();
+
+        /* setter sannsylighet for at geiten går tilbake, men ikke mindre enn startposisjon */
+        if (goatCrazy < 0.1 && goatPosition > 10) {
+          goatPosition -= 10;
+        } else {
+          goatPosition += 12;
+        }
+      }
+
+      /* Flytter katten */
+      function moveCat() {
+        let catMovesRandom = Math.floor(Math.random() * 6);
+        catPosition = catPosition + catMovesRandom + 5;
+      }
+      /* Vi valgte at cat skal bevege seg med mouseenter */
+      catRightLegButton.addEventListener("mouseenter", rightLeg);
+      catLeftLegButton.addEventListener("mouseenter", leftLeg);
+
+      function leftLeg() {
+        if (catLeftLeg === false) {
+          moveCat();
+        }
+        catLeftLeg = true;
+        catRightLeg = false;
+      }
+
+      function rightLeg() {
+        if (catRightLeg === false) {
+          moveCat();
+        }
+
+        catRightLeg = true;
+        catLeftLeg = false;
+      }
+
+      /* update fordi sjekk av hvem som vinner vil vi sjekke ofte, sånn at ikke 2 vinner samtidig */
+      function updateInterface() {
+        checkRacerTurtle();
+        checkWinner();
+        turtle.style.left = `${turtlePosition}px`;
+        goat.style.left = `${goatPosition}px`;
+        cat.style.left = `${catPosition}px`;
+      }
+
+      function checkRacerTurtle() {
+        if (goatPosition >= 400 || catPosition >= 400) {
+          turtleRacer = true;
+        }
+      }
+
+      function checkWinner() {
+        if (gameRunning === true) {
+          if (turtlePosition >= 790) {
+            heading.innerHTML = "Eskildpadde vant løpet!";
+            gameRunning = false;
+          }
+          if (goatPosition >= 790) {
+            heading.innerHTML = "GeirGeit vant løpet!";
+            gameRunning = false;
+          }
+          if (catPosition >= 790) {
+            heading.innerHTML = "Miaow Miaow vant løpet!";
+            gameRunning = false;
+          }
+        }
+        if (gameRunning === false) {
+          stop();
+        }
+      }
+
+      /* for at deltakerne skal stoppe etter målinjen og ikke løpe videre */
+      function stop() {
+        if (turtlePosition >= 820) {
+          clearInterval(turtleInterval);
+        }
+        if (goatPosition >= 820) {
+          clearInterval(goatInterval);
+        }
+      }
+
+      /* ---- Set Intervals --- */
+      let turtleInterval = setInterval(function () {
+        moveTurtle();
+      }, 1000);
+
+      let goatInterval = setInterval(function () {
+        moveGoat();
+      }, 500);
+
+      setInterval(function () {
+        updateInterface();
+      }, 100);
+
+      /* -------- Handlingsplan oppgave 4-2 ---------- */
+
+      // [X] Legg til turbomodus på skilpadde
+      // -> Ved 400px flytt skilpadde til vannet
+      // --> Flytt ned rundt 500px?
+      // -> Endre farten til skilpadde når i vannet
+      // --> fra 3px til 60px
+    </script>
+  </body>
+</html>

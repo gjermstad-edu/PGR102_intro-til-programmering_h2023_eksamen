@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Miaow Miaow drikker julebrus</title>
+    <!-- CSS skal ikke røres -->
+    <link
+      rel="stylesheet"
+      href="css-skal-ikke-roeres/miaow-miaow-drikker-julebrus.css"
+    />
+  </head>
+  <body>
+    <div id="container">
+      <!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+      <h1 id="main-heading">Miaow Miaow drikker julebrus</h1>
+
+      <img id="background-image" src="images/at-the-table.png" />
+
+      <img id="cat-left" src="images/cat-left.png" />
+
+      <img id="cat-right" src="images/cat-right.png" />
+
+      <img id="waiter" src="images/waiter.png" />
+
+      <div id="glass-1">
+        <div id="glass-1-content"></div>
+        <!-- Innholdet i glasset på venstre side -->
+      </div>
+
+      <div id="glass-2">
+        <div id="glass-2-content"></div>
+        <!-- Innholdet i glasset på høyre side -->
+      </div>
+    </div>
+
+    <div id="output-div">
+      <p>Her skrives det ut hva som skjer underveis</p>
+    </div>
+    <!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+    <script>
+      /* I denne script-tagen skal du kode JavaScript (ikke i ekstern fil) */
+
+      /* ------- Hente id'er --------- */
+
+      const catLeft = document.getElementById("cat-left");
+      const catRight = document.getElementById("cat-right");
+      const waiter = document.getElementById("waiter");
+
+      const glassLeft = document.getElementById("glass-1-content");
+      let glassLeftContent = 0;
+
+      const glassRight = document.getElementById("glass-2-content");
+      let glassRightContent = 0;
+
+      const output = document.getElementById("output-div");
+
+      /* For å ha kontroll på hva som er trykt på, for å ikke kjøre meldinger for andre elementer */
+      let waiterClicked = 0;
+      let catLeftClicked = 0;
+      let catRightClicked = 0;
+
+      /* Laget er variabel for å telle antall meldinger som er skrevet ut  */
+      let numberOfMessages = 0;
+
+      /* Antall meldinger som skal printes */
+      const outputArray = [
+        "Kelneren helte julebrus i høyre glass",
+        "Kelneren helte julebrus i venstre glass",
+        "Kelneren vil fylle på mer brus, men høyre glass er fullt",
+        "Kelneren vil fylle på mer brus, men venstre glass er fullt",
+        "Kelneren vil fylle på mer brus, men begge glassene er fulle",
+        "Miaow Miaow drikker litt av sin julebrus",
+        "Miaow Miaow vil drikke mer, men glasset er tomt",
+        "Miaow sin venn drikker litt av sin julebrus",
+        "Miaow sin venn vil drikke mer, men glasset er tomt",
+      ];
+
+      function fillContent() {
+        glassLeftContent += 40;
+        glassRightContent += 40;
+      }
+
+      function drinkLeftContent() {
+        glassLeftContent -= 20;
+      }
+
+      function drinkRightContent() {
+        glassRightContent -= 20;
+      }
+
+      function updateInterface() {
+        // Oppdaterer innhold i VENSTRE glasset
+        if (glassLeftContent >= 80) {
+          glassLeft.style.height = 80 + "px";
+          glassLeftContent = 80;
+        } else if (glassLeftContent <= 0) {
+          glassLeft.style.height = 0 + "px";
+          glassLeftContent = 0;
+        } else {
+          glassLeft.style.height = glassLeftContent + "px";
+        }
+
+        // Oppdaterer innhold i HØYRE glasset
+        if (glassRightContent >= 80) {
+          glassRight.style.height = 80 + "px";
+          glassRightContent = 80;
+        } else if (glassRightContent <= 0) {
+          glassRight.style.height = 0 + "px";
+          glassRightContent = 0;
+        } else {
+          glassRight.style.height = glassRightContent + "px";
+        }
+      }
+
+      function outputMessages() {
+        /* for å cleare outputet mellom hver handling */
+        output.innerHTML = "";
+
+        for (let i = 0; i < outputArray.length; i++) {
+          if (i === 0 && glassRightContent < 80 && waiterClicked === 1) {
+            numberOfMessages++;
+            output.innerHTML += `Melding ${numberOfMessages}: <p>${outputArray[i]}</p>`;
+          }
+          if (i === 1 && glassLeftContent < 80 && waiterClicked === 1) {
+            numberOfMessages++;
+            output.innerHTML += `Melding ${numberOfMessages}: <p>${outputArray[i]}</p>`;
+          }
+          if (
+            i === 2 &&
+            glassRightContent >= 80 &&
+            glassLeftContent < 80 &&
+            waiterClicked === 1
+          ) {
+            numberOfMessages++;
+            output.innerHTML += `Melding ${numberOfMessages}: <p>${outputArray[i]}</p>`;
+          }
+          if (
+            i === 3 &&
+            glassLeftContent >= 80 &&
+            glassRightContent < 80 &&
+            waiterClicked === 1
+          ) {
+            numberOfMessages++;
+            output.innerHTML += `Melding ${numberOfMessages}: <p>${outputArray[i]}</p>`;
+          }
+          if (
+            i === 4 &&
+            glassLeftContent >= 80 &&
+            glassRightContent >= 80 &&
+            waiterClicked === 1
+          ) {
+            numberOfMessages++;
+            output.innerHTML += `<p>Melding ${numberOfMessages}: ${outputArray[i]}</p>`;
+          }
+          if (i === 5 && glassLeftContent > 0 && catLeftClicked === 1) {
+            catLeftClicked = 0;
+            numberOfMessages++;
+            output.innerHTML += `<p>Melding ${numberOfMessages}: ${outputArray[i]}</p>`;
+          }
+          if (i === 6 && glassLeftContent === 0 && catLeftClicked === 1) {
+            catLeftClicked = 0;
+            numberOfMessages++;
+            output.innerHTML += `<p>Melding ${numberOfMessages}: ${outputArray[i]}</p>`;
+          }
+          if (i === 7 && glassRightContent > 0 && catRightClicked === 1) {
+            catRightClicked = 0;
+            numberOfMessages++;
+            output.innerHTML += `<p>Melding ${numberOfMessages}: ${outputArray[i]}</p>`;
+          }
+          if (i === 8 && glassRightContent === 0 && catRightClicked === 1) {
+            catRightClicked = 0;
+            numberOfMessages++;
+            output.innerHTML += `<p>Melding ${numberOfMessages}: ${outputArray[i]}</p>`;
+          }
+        }
+        /* nullstille kelneren for det er flere handlinger i arrayet som kan bli påvirket, kan ikke nullstille kelneren i for-løkken */
+        waiterClicked = 0;
+      }
+
+      /* ----- Onclick eventer ------- */
+
+      waiter.onclick = function () {
+        waiterClicked = 1;
+        outputMessages();
+        fillContent();
+        updateInterface();
+      };
+
+      catLeft.onclick = function () {
+        catLeftClicked = 1;
+        outputMessages();
+        drinkLeftContent();
+        updateInterface();
+      };
+
+      catRight.onclick = function () {
+        catRightClicked = 1;
+        outputMessages();
+        drinkRightContent();
+        updateInterface();
+      };
+
+      /* --------------- Handlingsplan oppgave 1 ----------------- */
+
+      // Klikk på kelneren -> fylles begge glassene med julebrus (40px) av gangen.
+      // X Hent ut  elementer som kan klikkes på
+      // X Hent ut kelner
+      // X Hent ut glass høyre
+      // X Hent ut glass venstre
+      // X Trykk på kelner og legg til 40px i hvert glass
+
+      // Klikk på katt minker det 20px med julebrus i glasset nærmest katten
+      // X klikk på en katt
+      // X -20px hvor hvert klikk
+      // X samme for begge kattene
+
+      // X ikke mulig å fylle mer enn 80px height med julebrus
+      // X If height === 80px -> stop, If 80px eller mer, rewrite til 80px
+
+      // X ikke mulig å få mindre enn 0px height
+      // X if height === 0px -> stop, if 0px eller mindre, rewrite til 0px.
+
+      // X Output av hva som skjer under restaurantscenen. Skal skje med hjelp av array og for-løkke.
+      // X function med array til output, med for-løkke
+      // X Legge til melding 1 og 2
+    </script>
+  </body>
+</html>
